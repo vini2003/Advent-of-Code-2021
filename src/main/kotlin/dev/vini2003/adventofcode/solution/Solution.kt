@@ -7,9 +7,9 @@ import terminal
 import java.io.InputStream
 import java.net.URL
 
-abstract class Solution(val day: Int, val iterations: Int) {
+abstract class Solution(private val year: Int, private val day: Int, private val iterations: Int) {
 	fun solve() {
-		terminal.println(brightCyan("\uD83D\uDD25 Solving day ${day}..."))
+		terminal.println(brightCyan("\uD83D\uDD25 Solving day ${day} of year ${year}..."))
 
 		val part1 = BenchmarkUtils.getAverageMs(iterations) {
 			solvePart1(InputUtils.getInput(day))
@@ -39,6 +39,4 @@ abstract class Solution(val day: Int, val iterations: Int) {
 	open fun solvePart1(input: URL): String = "not present!"
 	
 	open fun solvePart2(input: URL): String = "not present!"
-	
-	data class SolutionResult(val timeMs: Float, val result: String)
 }
