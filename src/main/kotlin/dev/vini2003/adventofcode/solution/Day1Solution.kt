@@ -1,46 +1,47 @@
 package dev.vini2003.adventofcode.solution
 
+import dev.vini2003.adventofcode.util.BenchmarkUtils
 import java.net.URL
 
-object Day1Solution : Solution(1) {
+object Day1Solution : Solution(1, 25_000) {
 	override fun solvePart1(input: URL): String {
-		val lines = input.readText().split('\n')
-		var lastDepth = lines.first().toInt()
-		
-		var timesDepthIncreased = 0
-		
-		lines.drop(1).forEach { line ->
-			if (line.isNotBlank()) {
-				if (line.toInt() > lastDepth) {
-					++timesDepthIncreased
+		val result =
+			input.readText()
+				.split('\n')
+				.filter(String::isNotBlank)
+				.map(String::toInt)
+				.let { depths ->
+					depths.mapIndexed { index, depth ->
+						index > 0 && index < depths.size && depth > depths[index - 1]
+					}
+				}.sumOf { boolean ->
+					boolean.compareTo(false)
 				}
-				
-				lastDepth = line.toInt()
-			}
-			
-		}
 		
-		return "$timesDepthIncreased"
+		
+		return "$result"
 	}
 	
 	override fun solvePart2(input: URL): String {
-		val lines = input.readText().split('\n')
-		var lastDepth = lines.take(3).sumOf(String::toInt)
-		
-		var timesDepthIncreased = 0
-		
-		lines.forEachIndexed { index, line ->
-			if (index > 2 && lines[index].isNotBlank() && lines[index - 1].isNotBlank() && lines[index - 2].isNotBlank()) {
-				var depth = lines[index].toInt() + lines[index - 1].toInt() + lines[index - 2].toInt()
-				
-				if (depth > lastDepth) {
-					++timesDepthIncreased
+		val result =
+			input.readText()
+				.split('\n')
+				.filter(String::isNotBlank)
+				.map(String::toInt)
+				.let { depths ->
+					depths.mapIndexed { index, depth ->
+						if (index > 0 && index < depths.size - 2) {
+							val nextAverageDepth = depth + depths[index + 1] + depths[index + 2]
+							val previousAverageDepth = depths[index - 1] + depth + depths[index + 1]
+							
+							nextAverageDepth > previousAverageDepth
+						} else false
+					}
+				}.sumOf { boolean ->
+					boolean.compareTo(false)
 				}
-				
-				lastDepth = depth
-			}
-		}
 		
-		return "$timesDepthIncreased"
+		
+		return "$result"
 	}
 }
