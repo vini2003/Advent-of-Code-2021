@@ -1,31 +1,23 @@
 package dev.vini2003.adventofcode.util
 
 import java.util.concurrent.TimeUnit
+import kotlin.system.measureTimeMillis
+import kotlin.time.ExperimentalTime
+import kotlin.time.measureTimedValue
 
 object BenchmarkUtils {
+	@OptIn(ExperimentalTime::class)
 	fun <T> getAverageMs(iterations: Int, code: () -> T): BenchmarkResult<T> {
 		var count = 0F
 		var total = 0F
 		
-		var result: T? = null
+		var result = code()
 		
-		for (i in 0..iterations) {
-			val then = System.nanoTime()
-			
-			if (result == null) {
-				result = code()
-			} else {
-				code()
-			}
-			
-			val now = System.nanoTime()
-			
-			val ms = TimeUnit.MILLISECONDS.convert(now - then, TimeUnit.NANOSECONDS)
-			
-			if (i > 0) {
-				count += 1F
-				total += ms
-			}
+		for (i in 1..iterations) {
+			val timedValue = measureTimedValue(code)
+
+			total += timedValue.duration.inWholeMilliseconds
+			count += 1
 		}
 		
 		return BenchmarkResult(count, total, total / count, result!!)

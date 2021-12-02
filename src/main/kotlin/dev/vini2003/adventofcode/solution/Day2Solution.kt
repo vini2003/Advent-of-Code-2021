@@ -1,11 +1,10 @@
-package dev.vini2003.adventofcode.solution.year_2021
+package dev.vini2003.adventofcode.solution
 
-import dev.vini2003.adventofcode.solution.Solution
 import java.net.URL
 
-object Day2Solution : Solution(2021, 2, 1) {
+object Day2Solution : Solution(2021, 2, 5_000) {
 	override fun solvePart1(input: URL): String {
-		val lines = input.readText().lines().dropLast(1)
+		val lines = input.readText().trimEnd().lines()
 		
 		var forward =0
 		var depth = 0
@@ -24,7 +23,7 @@ object Day2Solution : Solution(2021, 2, 1) {
 	}
 	
 	override fun solvePart2(input: URL): String {
-		val lines = input.readText().lines().dropLast(1)
+		val lines = input.readText().trimEnd().lines()
 		
 		var aim = 0
 		var depth = 0
