@@ -2,7 +2,7 @@ package dev.vini2003.adventofcode.solution
 
 import java.net.URL
 
-object Day2Solution : Solution(2021, 2, 5_000) {
+object Day2Solution : Solution(2021, 2, 1) {
 	override fun solvePart1(input: URL): String {
 		val lines = input.readText().trimEnd().lines()
 		

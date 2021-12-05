@@ -11,7 +11,7 @@ object BenchmarkUtils {
 		var count = 0F
 		var total = 0F
 		
-		var result = code()
+		val result = code()
 		
 		for (i in 1..iterations) {
 			val timedValue = measureTimedValue(code)
