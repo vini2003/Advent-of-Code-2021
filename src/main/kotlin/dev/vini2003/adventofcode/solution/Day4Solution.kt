@@ -36,18 +36,10 @@ object Day4Solution : Solution(2021, 4, 1) {
 			return m.flatten().filter { entry -> !entry.marked }.sumOf { entry -> entry.value }
 		}
 		
-		fun sumMarked(): Int {
-			return m.flatten().filter { entry -> entry.marked }.sumOf { entry -> entry.value }
-		}
-		
 		fun isWinner() = hasRow() || hasColumn()
 		
 		fun update(number: Int) {
 			m.flatten().forEach { entry -> entry.update(number) }
-		}
-		
-		override fun toString(): String {
-			return m.map { it.map { "${it.value}: ${it.marked}" } }.toString()
 		}
 	}
 	
@@ -58,26 +50,23 @@ object Day4Solution : Solution(2021, 4, 1) {
 		
 		val boards = lines.drop(1).windowed(5, 5).map(::Board)
 		
-		var resultBoard: Board? = null
-		var resultNumber: Int? = null
+		val winners = mutableListOf<Pair<Int, Board>>()
 		
 		for (number in numbers) {
-			boards.forEach { board -> board.update(number) }
-			
-			val winner = boards.firstOrNull(Board::isWinner)
-		
-			if (winner != null) {
-				resultBoard = winner
-				resultNumber = number
-				
-				break
+			boards.forEach { board ->
+				if (!board.isWinner()) {
+					board.update(number)
+					
+					if (board.isWinner()) {
+						winners += number to board
+					}
+				}
 			}
 		}
 		
-		resultBoard!!
-		resultNumber!!
-
-		return "${resultBoard.sumUnmarked() * resultNumber}"
+		val (number, board) = winners.first()
+		
+		return "${board.sumUnmarked() * number}"
 	}
 	
 	override fun solvePart2(input: URL): String {
@@ -101,8 +90,8 @@ object Day4Solution : Solution(2021, 4, 1) {
 			}
 		}
 		
-		val (resultNumber, resultBoard) = winners.last()
+		val (number, board) = winners.last()
 		
-		return "${resultBoard.sumUnmarked() * resultNumber}"
+		return "${board.sumUnmarked() * number}"
 	}
 }
