@@ -8,6 +8,7 @@ object SolutionUtils {
 		Day2Solution,
 		Day3Solution,
 		Day4Solution,
-		Day5Solution
+		Day5Solution,
+		Day6Solution
 	)
 }
